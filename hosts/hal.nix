@@ -54,16 +54,34 @@
       inkscape
 
       lutris
-      chromium # browser games
+      chromium # browser testing
 
       # MCU dev
+      # TODO: make into shell.nix
       gcc-arm-embedded
       openocd
       picocom
 
+      multimc # foss minecraft launcher
+
       # closed-source
       quartus-prime-lite
     ];
+
+    xsession.windowManager.i3 = {
+      extraConfig = ''
+        workspace 0 output DP-3
+        workspace 1 output DP-3
+        workspace 2 output DP-3
+        workspace 3 output DP-3
+        workspace 4 output DP-3
+        workspace 5 output HDMI-1
+        workspace 6 output HDMI-1
+        workspace 7 output HDMI-1
+        workspace 8 output HDMI-1
+        workspace 9 output HDMI-1
+      '';
+    };
 
     services.polybar.config = {
       "module/wlan".interface = "wlp5s0";

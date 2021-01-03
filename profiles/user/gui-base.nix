@@ -17,7 +17,7 @@ in {
       ssh.enable = true;
       firefox.enable = true;
       alacritty.enable = true;
-      zathura.enable = true;
+      zathura.enable = false;
       mpv.enable = true;
       nomacs.enable = true;
     };
@@ -26,29 +26,33 @@ in {
       packages = with pkgs; [
         pamixer # pulseaudio CLI (for volume keys)
 
-        texlive.combined.scheme-medium # latex environment
+        texlive.combined.scheme-full # latex environment
         pandoc # convert document formats
 
         imagemagick7 # image editing CLI and GUI
-        qpdf # pdf manipulation CLi
+        qpdf # pdf manipulation CLI
         adwaita-qt # make qt apps look like gtk apps
+        libnotify # notify-send command
 
-        blueman # bluetooth GUI
         pavucontrol # pulseaudio GUI
         wpgtk # gtk GUI
-        bookworm # ebook reader
 
         celluloid # mpv gtk frontend
         safeeyes # reminds user on eye health
         syncthingtray # syncthing tray
 
+        vscodium # for draw.io extension
+
         # virtualization
         libvirt # manage VM's
         virtmanager # manage VM's graphically
         remmina # usable RDP client
+        openconnect_pa # cs.wisc.edu VPN
 
         keepassxc # password manager
         xournalpp # handwritten notes and PDF markup
+        calibre # ebook manager
+        # nur.repos.onny.foliate # ebook reader
 
         # messaging
         element-desktop # matrix electron client
@@ -57,19 +61,34 @@ in {
 
         # gaming
         sc-controller # use steam controller without steam
-        steam
         protontricks # for problematic Steam Play games
         # wine # wine is not an emulator
 
         python-onlykey # OnlyKey CLI
       ];
 
-      # for adwaita-qt
-      sessionVariables.QT_STYLE_OVERRIDE = "Adwaita-Dark";
+      sessionVariables = {
+        QT_STYLE_OVERRIDE = "Adwaita-Dark"; # for adwaita-qt
+        SUDO_ASKPASS = "${pkgs.gnome3.seahorse}/libexec/seahorse/ssh-askpass";
+      };
     };
 
-    # see application profiles for file associations and defaults
-    xdg.mimeApps.enable = true;
+    xdg = {
+      enable = true;
+      # see application profiles for file associations and defaults
+      mimeApps.enable = true;
+      userDirs = {
+        enable = true;
+        desktop = "$HOME/desktop";
+        documents = "$HOME/documents";
+        download = "$HOME/downloads";
+        music = "$HOME/documents/music";
+        pictures = "$HOME/documents/pictures";
+        publicShare = "$HOME/documents/public";
+        templates = "$HOME/documents/templates";
+        videos = "$HOME/documents/videos";
+      };
+    };
 
     gtk = {
       enable = true;

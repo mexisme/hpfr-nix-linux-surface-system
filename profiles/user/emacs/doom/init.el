@@ -19,13 +19,13 @@
  :completion
  company
  (ivy
-  +fuzzy
+  ;; +fuzzy
   +prescient
-  +childframe
-  +icons
-  )
+  ;; +childframe ; TODO: https://github.com/hlissner/doom-emacs/labels/%3Acompletion%20ivy
+  +icons)
 
  :ui
+ deft
  doom
  doom-dashboard
  doom-quit
@@ -60,6 +60,7 @@
   +icons)
  electric
  ibuffer
+ undo
  vc
 
  :term
@@ -72,12 +73,13 @@
  ;;grammar
 
  :tools
+ (debugger +lsp)
  direnv
  editorconfig
  (eval +overlay)
  (lookup
   +docsets)
- lsp
+ (lsp +peek)
  magit
  pdf
  rgb
@@ -85,25 +87,28 @@
 
  :lang
  assembly
- cc
+ (cc +lsp)
  data
  emacs-lisp
- javascript
- (latex +latexmk)
+ (go +lsp)
+ (javascript +lsp)
+ (latex +latexmk +lsp)
  markdown
  nix
  (org
   +dragndrop
   +hugo
+  +noter
   +pandoc
   +pomodoro
   +present
   +roam
   )
- raku
- python
- sh
+ ;;raku
+ (python +lsp)
+ (sh +fish)
  web
+ yaml
 
  :email
  notmuch

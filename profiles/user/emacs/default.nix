@@ -12,7 +12,7 @@ in {
         enable = true;
         extraPackages = epkgs: [ epkgs.vterm ];
       };
-      fish.loginShellInit = ''
+      fish.shellInit = ''
         # fish does not perform wordsplitting
         set EDITOR emacsclient -ca emacs
       '';
@@ -31,14 +31,29 @@ in {
         sqlite # org-roam
         ripgrep # doom code searching features
         jq # json parsing
+        libreoffice # docx to docview
+        gdb # gdb mode, lsp gdb
+        nodejs # dap-mode
+
+        # language linting and formatting
         shellcheck # shell linting
+        shfmt # shell formatting
+        clang-tools # for clang-format
         nixfmt # opinionated nix formatting
         html-tidy # html and xml formatting
+
+        # language servers
+        ccls # c
+        lua53Packages.digestif # TeX
+        gopls # go
+        rls # rust
+        python-language-server
+        nodePackages.javascript-typescript-langserver
       ];
 
       sessionVariables = {
         # add doom commands to path
-        PATH = "$PATH:$HOME/.emacs.d/bin/";
+        PATH = "$PATH:$HOME/.config/emacs/bin/";
         # fall back to emacs if no emacs server
         EDITOR = "emacsclient -ca emacs";
       };
@@ -49,7 +64,17 @@ in {
         source = ./doom;
         recursive = true;
       };
-      mimeApps.associations.added."application/pdf" = "emacsclient.desktop";
+      mimeApps = let
+        applyToAll = list:
+          builtins.listToAttrs (map (key: {
+            name = key;
+            value = "emacsclient.desktop";
+          }) list);
+      in {
+        associations.added = applyToAll [ "application/pdf" "inode/directory" ];
+        defaultApplications =
+          applyToAll [ "application/pdf" "inode/directory" ];
+      };
       dataFile.emacsclient = {
         target = "applications/emacsclient.desktop";
         text = ''
@@ -72,6 +97,5 @@ in {
         '';
       };
     };
-    services.picom.opacityRule = [ "92:class_g = 'Emacs'" ];
   };
 }

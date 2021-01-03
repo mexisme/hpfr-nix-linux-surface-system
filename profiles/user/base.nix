@@ -16,13 +16,23 @@ in {
       neovim.enable = true;
     };
 
-    # nix-shell, etc
+    # user-level nixpkgs config for nix-shell, home-manager, non-NixOS
+    # installations, etc
     xdg.configFile."nixpkgs/config.nix".text = ''
       {
         allowUnfree = true;
+        joypixels.acceptLicense = true;
+        packageOverrides = pkgs: {
+          nur = import (builtins.fetchTarball
+            "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+              inherit pkgs;
+            };
+        };
       }
     '';
+
     home = {
+      stateVersion = "21.03";
       packages = with pkgs; [
         # system-related
         # TODO: package as utils only? for relabeling
@@ -33,11 +43,18 @@ in {
         zip
         unzip
         wget # file download
+        fd # better find
+        bat # better cat
         ripgrep # better grep
+        ripgrep-all # pdf's, etc
+        file # get filetypes
         fio # disk benchmarking
+        recode # change file encoding in place
         pciutils # lspci
         usbutils # lsusb
+        evtest # debug integrated devices
         rmlint # find and rm duplicate files
+        ssh-audit # audit ssh configuration
         youtube-dl # video download
         rclone # multiplatform cloud sync
         ffsend # firefox send client

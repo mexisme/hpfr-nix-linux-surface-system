@@ -23,7 +23,7 @@ in {
     home.packages = with pkgs; [
       sxhkd # wm agnostic keybindings for X
 
-      # TODO package scripts with these dependencies
+      # TODO: package scripts with these dependencies
       xorg.xwininfo # query window information
       xorg.xprop # query window properties
       xorg.xdpyinfo # get info like DPI
@@ -105,7 +105,7 @@ in {
       unclutter.enable = true;
     };
 
-    programs.autorandr.hooks.postswitch."set-background" =
-      "${pkgs.gui-scripts}/bin/setbg";
+    programs.autorandr.hooks.postswitch."reset-background" =
+      "${pkgs.gui-scripts}/bin/setbg ~/.config/wall";
   };
 }
